@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나만의 블로그</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+    <style>
+        @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+
+        body {
+            margin: 0px;
+        }
+
+        .wrap {
+            width: 900px;
+            margin: 10px auto;
+        }
+
+        .area-write {
+            position: relative;
+            width: 700px;
+            left: 60%;
+            top: -260px;
+        }
+
+        .area-write > #title {
+            margin-bottom: 15px;
+            margin-right: 10px;
+            height: 40px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: none;
+            resize: none;
+        }
+
+        .area-write > #author {
+            margin-bottom: 15px;
+            height: 40px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: none;
+            resize: none;
+        }
+
+        .area-write > #password {
+            margin-top: 5px;
+            width: 200px;
+            height: 40px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: none;
+            resize: none;
+        }
+
+        .area-write .btn-send {
+            cursor: pointer;
+            position: absolute;
+            width: 60px;
+            height: 40px;
+            bottom: 8px;
+            top: 257px;
+            left: 217px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: none;
+        }
+
+        .background-header {
+            position: fixed;
+            z-index: -1;
+            top: 0px;
+            width: 100%;
+            height: 50%;
+            background-color: #0F3D3E;
+        }
+
+        .background-body {
+            position: fixed;
+            z-index: -1;
+            top: 428px;
+            height: 100%;
+            width: 100%;
+            background-color: #E2DCC8;
+        }
+
+        .header {
+            margin-top: 100px;
+        }
+
+        .header h2 {
+            font-size: 110px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 0.79;
+            letter-spacing: -0.5px;
+            text-align: left;
+            color: #ffffff;
+        }
+
+        .header p {
+            font-size: 50px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 0.79;
+            letter-spacing: -0.5px;
+            text-align: left;
+            color: #ffffff;
+        }
+
+        textarea.field {
+            width: 550px;
+            height: 180px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: none;
+            padding: 18px;
+            // resize: none;
+        }
+
+        textarea.field::placeholder {
+            width: 216px;
+            height: 16px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1;
+            letter-spacing: -0.96px;
+            text-align: left;
+            color: #868e96;
+        }
+
+        .card {
+            position: relative;
+            width: 538px;
+            left: 22%;
+            top: -180px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .card .metadata {
+            position: relative;
+            display: flex;
+            font-family: 'Spoqa Han Sans';
+            font-size: 11px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1;
+            letter-spacing: -0.77px;
+            text-align: left;
+            color: #adb5bd;
+            height: 14px;
+            padding: 10px 23px;
+        }
+
+        .card .metadata .date {
+
+        }
+
+        .card .metadata .author {
+            margin-left: 20px;
+        }
+
+        .contents {
+            padding: 0px 23px;
+            /*word-wrap: break-word;*/
+            /*word-break: break-all;*/
+        }
+
+        .contents .text {
+            width: 500px;
+            height: 40px;
+            margin-top: 30px;
+            border: none;
+            font-size: 1.2em;
+        }
+
+        .contents div.edit {
+            display: none;
+        }
+
+        .contents textarea.te-edit {
+            margin-top: 20px;
+            border-right: none;
+            border-top: none;
+            border-left: none;
+            resize: none;
+            border-bottom: 1px solid #212529;
+            width: 100%;
+            font-family: 'Spoqa Han Sans';
+        }
+
+        .footer {
+            position: relative;
+            padding: 0 1rem 3rem 0;
+        }
+
+        .footer img.icon-start-edit {
+            cursor: pointer;
+            position: absolute;
+            bottom: 14px;
+            right: 20px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .footer img.icon-end-edit {
+            cursor: pointer;
+            position: absolute;
+            display: none;
+            bottom: 14px;
+            right: 55px;
+            width: 20px;
+            height: 15px;
+        }
+
+        .footer img.icon-delete {
+            cursor: pointer;
+            position: absolute;
+            display: none;
+            bottom: 12px;
+            right: 19px;
+            width: 14px;
+            height: 18px;
+        }
+
+        #cards-box {
+            margin-top: 12px;
+        }
+    </style>
+    <script>
+        // 사용자가 내용을 올바르게 입력하였는지 확인합니다.
+        function isValidContents(author, title, contents, password) {
+            if (title == '') {
+                alert('제목을 입력해주세요');
+                return false;
+            }
+            if (author == '') {
+                alert('작성자를 입력해주세요');
+                return false;
+            }
+            if (contents == '') {
+                alert('내용을 입력해주세요');
+                return false;
+            }
+            if (password == '') {
+                alert('비밀번호를 입력해주세요');
+                return false;
+            }
+            return true;
+        }
+
+        $(document).ready(function () {
+            getBoard();
+            $('#cards-box').empty();
+        })
+
+        function getBoard() {
+            $.ajax({
+                type: "GET",
+                url: "/api/post",
+                success: function (response) {
+                    for (let i=0; i < response.length; i++) {
+                        let board = response[i];
+                        let id = board.id;
+                        let author = board.author;
+                        let title = board.title;
+                        let contents = board.contents;
+                        let password = board.password;
+                        let modifiedAt = board.modifiedAt;
+                        addHTML(id, author, title, contents, password, modifiedAt);
+                        console.log(response[i]);
+                    }
+                }
+            });
+        }
+
+        // 게시글 하나를 HTML로 만들어서 body 태그 내 원하는 곳에 붙입니다.
+        function addHTML(id, author, title, contents, password, modifiedAt) {
+            // 1. HTML 태그를 만듭니다.
+            let tempHtml = makeMessage(id, author, title, contents, password, modifiedAt);
+            // 2. #cards-box 에 HTML을 붙인다.
+            $('#cards-box').append(tempHtml);
+        }
+
+        function makeMessage(id, author, title, contents, password, modifiedAt, i) {
+            return `<div class="card">
+                        <!-- date/username 영역 -->
+                        <input type="hidden" value="${password}" id="${id}-password">
+                        <input type="hidden" value="${contents}" id="${id}-db-contents">
+                        <div class="metadata">
+                            <div class="date">
+                                ${modifiedAt}
+                            </div>
+                            <div id="${id}-author" class="author">
+                                ${author}
+                            </div>
+                        </div>
+                        <!-- contents 조회/수정 영역-->
+                        <div class="contents">
+                            <div id="${id}-title" class="text">
+                                ${title}
+                            </div>
+                            <div id="${id}-editarea" class="edit">
+                                <textarea id="${id}-textarea" class="te-edit" name="" id="" cols="30" rows="5">${contents}</textarea>
+                                <input type="text" class="password" id="${id}-password-detail" placeholder="비밀번호 입력">
+                            </div>
+                        </div>
+                        <!-- 버튼 영역-->
+                        <div class="footer">
+                            <img id="${id}-edit" class="icon-start-edit" src="images/edit.png" alt="" onclick="editPost('${id}')">
+                            <img id="${id}-delete" class="icon-delete" src="images/delete.png" alt="" onclick="deleteOne('${id}')">
+                            <img id="${id}-submit" class="icon-end-edit" src="images/done.png" alt="" onclick="submitEdit('${id}')">
+                        </div>
+                    </div>`;
+        }
+
+        function createBoard() {
+            // 게시글 작성
+            let author = $('#author').val();
+            let title = $('#title').val();
+            let contents = $('#contents').val();
+            let password = $('#password').val();
+
+            // 2. 작성한 글이 올바른지 isValidContents 함수를 통해 확인합니다.
+            if (isValidContents(author, title, contents, password) == false) {
+                return;
+            }
+
+            // 4. 전달할 data JSON으로 만듭니다.
+            let data = {'title': title, 'author': author, 'contents': contents, 'password': password};
+
+            // 5. POST /api/post 에 data를 전달합니다.
+            $.ajax({
+                type: "POST",
+                url: "/api/post",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert('글이 성공적으로 작성되었습니다.');
+                    window.location.reload();
+                }
+            });
+        }
+
+        function editPost(id) {
+            showEdits(id);
+            let contents = $(`#${id}-db-contents`).val();
+            $(`#${id}-textarea`).val(contents);
+        }
+
+        function showEdits(id) {
+            $(`#${id}-editarea`).show();
+            $(`#${id}-submit`).show();
+            $(`#${id}-delete`).show();
+
+            $(`#${id}-edit`).hide();
+        }
+
+        // 게시글을 수정합니다.
+        function submitEdit(id) {
+            // 1. 작성 대상 게시글의 author과 contents 를 확인합니다.
+            let author = $(`#${id}-author`).text().trim();
+            let title = $(`#${id}-title`).text().trim();
+            let contents = $(`#${id}-textarea`).val();
+            let password = $(`#${id}-password-detail`).val();
+            let pwd = $(`#${id}-password`).val();
+
+            console.log(password);
+            console.log(pwd);
+            // 2. 비밀번호가 일치하는지 passwordChk 함수를 통해 확인합니다.
+
+            if (password == '') {
+                alert('비밀번호를 입력해주세요.');
+                return false;
+            } else if (password != pwd) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return false;
+            } else {
+                // 3. 전달할 data JSON으로 만듭니다.
+                let data = {'author': author, 'title': title, 'contents': contents, 'password': password};
+
+                // 4. PUT /api/memos/{id} 에 data를 전달합니다.
+                $.ajax({
+                    type: "PUT",
+                    url: `/api/post/${id}`,
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: function (response) {
+                        alert('게시글 변경에 성공하였습니다.');
+                        window.location.reload();
+                    }
+                });
+            }
+        }
+
+        // 게시글을 삭제합니다.
+        function deleteOne(id) {
+            let password = $(`#${id}-password-detail`).val();
+            let pwd = $(`#${id}-password`).val();
+
+            if (password == '') {
+                alert('비밀번호를 입력해주세요.');
+                return false;
+            } else if (password != pwd) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return false;
+            } else {
+                // 1. DELETE /api/post/{id} 에 요청해서 게시글을 삭제합니다.
+                $.ajax({
+                    type: 'DELETE',
+                    url: `/api/post/${id}`,
+                    success: function () {
+                        alert('삭제가 완료되었습니다.');
+                        window.location.reload();
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+
+<body>
+<div class="background-header">
+
+</div>
+<div class="background-body">
+
+</div>
+<div class="wrap">
+    <div class="header">
+        <h2>My Blog</h2>
+    </div>
+    <div class="header">
+        <p>나만의 블로그</p>
+    </div>
+    <div class="area-write">
+        <input type="text" name="title" id="title" placeholder="제목">
+        <input type="text" name="author" id="author" placeholder="작성자">
+        <textarea class="field" placeholder="나만의 블로그 글을 작성해주세요~!" name="contents" id="contents" cols="40" rows="10"></textarea>
+        <input type="text" name="password" id="password" placeholder="글의 비밀번호를 입력해주세요.">
+        <button class="btn-send" onclick="createBoard()">등록</button>
+    </div>
+    <div id="cards-box" class="area-read">
+        <div class="card">
+            <!-- date/username 영역 -->
+            <div class="metadata">
+                <div class="date">
+                    ${modifiedAt}
+                </div>
+                <div id="${id}-author" class="author">
+                    ${username}
+                </div>
+            </div>
+            <!-- contents 조회/수정 영역-->
+            <div class="contents">
+                <input id="1-title" class="text" value="dsafnkalfklewakfl" onfocus="this.blur()">
+                <div id="1-editarea" class="edit">
+                    <textarea id="1-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
+                    <input type="text" class="password" id="password-detail">
+                </div>
+            </div>
+            <!-- 버튼 영역-->
+            <div class="footer">
+                <img id="1-edit" class="icon-start-edit" src="images/edit.png" alt="" onclick="editPost('1')">
+                <img id="1-delete" class="icon-delete" src="images/delete.png" alt="" onclick="deleteOne('1')">
+                <img id="1-submit" class="icon-end-edit" src="images/done.png" alt="" onclick="submitEdit('1')">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
