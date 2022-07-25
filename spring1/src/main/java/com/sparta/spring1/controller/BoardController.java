@@ -23,21 +23,17 @@ public class BoardController {
         return boardRepository.findAllByModifiedAtBetweenOrderByModifiedAtDesc(start, end);
     }
 
-    @GetMapping("boardList")
-    public String getList() {
-        return "boardList";
-    }
-
-    @GetMapping("/api/post/{id}")
-    public BoardRequestDto getBoard(@PathVariable Long id) {
-        return boardService.getBoard(id);
-    }
+//    @GetMapping("boardList")
+//    public String getList() {
+//        return "boardList";
+//    }
 
     @PostMapping("/api/post")
     public Board createBoard(@RequestBody BoardRequestDto requestDto) {
         Board board = new Board(requestDto);
         return boardRepository.save(board);
     }
+
 
     @PutMapping("/api/post/{id}")
     public Long updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto) {

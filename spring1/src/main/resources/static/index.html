@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="나만의 블로그">
+    <meta property="og:description" content="짧은 글을 쓰고 업로드 해보세요~!">
+    <meta property="og:image" content="images/og_image.png">
     <title>나만의 블로그</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -12,6 +15,8 @@
 
     <style>
         @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+        @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@500&display=swap');
 
         body {
             margin: 0px;
@@ -77,7 +82,7 @@
             z-index: -1;
             top: 0px;
             width: 100%;
-            height: 50%;
+            height: 60%;
             background-color: #0F3D3E;
         }
 
@@ -95,7 +100,8 @@
         }
 
         .header h2 {
-            font-size: 110px;
+            font-family: 'Kanit', sans-serif;
+            font-size: 90px;
             font-weight: bold;
             font-stretch: normal;
             font-style: normal;
@@ -106,6 +112,7 @@
         }
 
         .header p {
+            font-family: 'Do Hyeon', sans-serif;
             font-size: 50px;
             font-weight: 500;
             font-stretch: normal;
@@ -113,6 +120,7 @@
             line-height: 0.79;
             letter-spacing: -0.5px;
             text-align: left;
+            margin-left: 30px;
             color: #ffffff;
         }
 
@@ -167,11 +175,15 @@
         }
 
         .card .metadata .date {
-
+            margin-left: 20px;
+            width: 180px;
+            height: 30px;
+            border: none;
         }
 
         .card .metadata .author {
-            margin-left: 20px;
+            height: 30px;
+            border: none;
         }
 
         .contents {
@@ -302,21 +314,16 @@
                         <input type="hidden" value="${password}" id="${id}-password">
                         <input type="hidden" value="${contents}" id="${id}-db-contents">
                         <div class="metadata">
-                            <div class="date">
-                                ${modifiedAt}
-                            </div>
-                            <div id="${id}-author" class="author">
-                                ${author}
-                            </div>
+                            <input type="text" id="${id}-author" class="author" value="${author}" disabled>
+                            <input type="text" class="date" value="${modifiedAt}" disabled>
                         </div>
                         <!-- contents 조회/수정 영역-->
                         <div class="contents">
-                            <div id="${id}-title" class="text">
-                                ${title}
-                            </div>
+                            <input type="text" id="${id}-title" class="text" value="${title}" disabled>
                             <div id="${id}-editarea" class="edit">
                                 <textarea id="${id}-textarea" class="te-edit" name="" id="" cols="30" rows="5">${contents}</textarea>
-                                <input type="text" class="password" id="${id}-password-detail" placeholder="비밀번호 입력">
+                                <input type="text" class="password" id="${id}-password-change" placeholder="변경할 비밀번호 입력">
+                                <input type="text" class="password" id="${id}-password-detail" placeholder="비밀번호 확인">
                             </div>
                         </div>
                         <!-- 버튼 영역-->
@@ -360,6 +367,8 @@
             showEdits(id);
             let contents = $(`#${id}-db-contents`).val();
             $(`#${id}-textarea`).val(contents);
+            $(`#${id}-author`).attr("disabled", false);
+            $(`#${id}-title`).attr("disabled", false);
         }
 
         function showEdits(id) {
@@ -373,25 +382,23 @@
         // 게시글을 수정합니다.
         function submitEdit(id) {
             // 1. 작성 대상 게시글의 author과 contents 를 확인합니다.
-            let author = $(`#${id}-author`).text().trim();
-            let title = $(`#${id}-title`).text().trim();
+            let author = $(`#${id}-author`).val();
+            let title = $(`#${id}-title`).val();
             let contents = $(`#${id}-textarea`).val();
-            let password = $(`#${id}-password-detail`).val();
+            let originPassword = $(`#${id}-password-detail`).val();
+            let changePassword = $(`#${id}-password-change`).val();
             let pwd = $(`#${id}-password`).val();
 
-            console.log(password);
-            console.log(pwd);
-            // 2. 비밀번호가 일치하는지 passwordChk 함수를 통해 확인합니다.
-
-            if (password == '') {
+            // 2. 비밀번호가 일치하는지 확인합니다.
+            if (originPassword == '') {
                 alert('비밀번호를 입력해주세요.');
                 return false;
-            } else if (password != pwd) {
+            } else if (originPassword != pwd) {
                 alert('비밀번호가 일치하지 않습니다.');
                 return false;
             } else {
                 // 3. 전달할 data JSON으로 만듭니다.
-                let data = {'author': author, 'title': title, 'contents': contents, 'password': password};
+                let data = {'author': author, 'title': title, 'contents': contents, 'password': changePassword};
 
                 // 4. PUT /api/memos/{id} 에 data를 전달합니다.
                 $.ajax({
@@ -413,7 +420,7 @@
             let pwd = $(`#${id}-password`).val();
 
             if (password == '') {
-                alert('비밀번호를 입력해주세요.');
+                alert('비밀번호를 확인해주세요.');
                 return false;
             } else if (password != pwd) {
                 alert('비밀번호가 일치하지 않습니다.');
