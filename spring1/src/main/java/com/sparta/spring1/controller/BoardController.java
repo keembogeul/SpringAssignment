@@ -20,13 +20,9 @@ public class BoardController {
     public List<Board> getBoardList() {
         LocalDateTime start = LocalDateTime.now().minusDays(1);
         LocalDateTime end = LocalDateTime.now();
-        return boardRepository.findAllByModifiedAtBetweenOrderByModifiedAtDesc(start, end);
+        return boardRepository.findAllByCreatedAtBetweenOrderByCreatedAtDesc(start, end);
     }
 
-//    @GetMapping("boardList")
-//    public String getList() {
-//        return "boardList";
-//    }
 
     @PostMapping("/api/post")
     public Board createBoard(@RequestBody BoardRequestDto requestDto) {
