@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,6 +24,11 @@ public class BoardController {
         return boardRepository.findAllByCreatedAtBetweenOrderByCreatedAtDesc(start, end);
     }
 
+    @GetMapping("/api/post/{id}")
+    public Optional<Board> getBoard(@PathVariable Long id) {
+        Optional<Board> board = boardRepository.findById(id);
+        return board;
+    }
 
     @PostMapping("/api/post")
     public Board createBoard(@RequestBody BoardRequestDto requestDto) {
@@ -30,16 +36,21 @@ public class BoardController {
         return boardRepository.save(board);
     }
 
+    @PostMapping("/api/post/{id}")
+    public Boolean checkPwd(@PathVariable Long id, @RequestBody BoardRequestDto requestDto) throws Exception {
+        return boardService.checkPassword(id, requestDto.getPassword());
+    }
+
 
     @PutMapping("/api/post/{id}")
-    public Long updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto) {
+    public Optional<Board> updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto requestDto) {
         boardService.update(id, requestDto);
-        return id;
+        Optional<Board> board = boardRepository.findById(id);
+        return board;
     }
 
     @DeleteMapping("/api/post/{id}")
-    public Long deleteBoard(@PathVariable Long id) {
-        boardRepository.deleteById(id);
-        return id;
+    public Boolean deleteBoard(@PathVariable Long id) throws Exception {
+        return boardService.deleteCheck(id);
     }
 }
